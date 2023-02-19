@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "../store/store";
 
 type Animal = {
   id: number;
@@ -8,35 +7,36 @@ type Animal = {
   imageUrl: string;
 };
 
-const availableAnimals: Animal[] = [
-  {
-    id: 1,
-    name: "Cat",
-    species: "Domestic Cat",
-    imageUrl:
-      "https://www.purina.com/sites/default/files/styles/kraken_generic_max_width_240/public/AmericanBobtail_body_6.jpg?itok=974XSSws",
-  },
-  {
-    id: 2,
-    name: "dog",
-    species: "Domesticaded Dog",
-    imageUrl:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZe7j1AkzyZG00LBp030dDsgHnJic68m-klQ&usqp=CAU",
-  },
-];
-
 interface AnimalsSliceType {
   animals: Animal[];
   loading: boolean;
+  species: string
 }
 
 const initialState: AnimalsSliceType = {
   animals: [],
   loading: true,
+  species: ""
 };
 
-export const animalsSlice = createSlice({
+const animalsSlice = createSlice({
   name: "animals",
   initialState,
-  reducers: {},
+  reducers: {
+    setAllAninmals: (state, action: PayloadAction<Animal[]>) => {
+      state.animals = action.payload;
+    },
+    setLoading: (state, action: PayloadAction<boolean> ) => {
+      state.loading = action.payload
+    },
+    setAnimalSpecie: (state, action: PayloadAction<string> ) => {
+      state.species = action.payload
+    }
+  },
+  
 });
+
+export type { Animal };
+export const { setAllAninmals, setLoading, setAnimalSpecie } = animalsSlice.actions;
+// export const selectAnimals = (state: RootState) => state.animals.animals
+export default animalsSlice.reducer;

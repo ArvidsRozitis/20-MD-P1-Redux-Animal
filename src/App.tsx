@@ -1,8 +1,8 @@
-
 import { useAppSelector, useAppDispatch } from "./store/hooks";
 import { decrement, increment } from "./slices/counterSlice";
 import "./App.css";
-import AnimalCard from "./components/AnimalCard/AnimalCard";
+import { AnimalCardList } from "./components/AnimalCardList/AnimalCardList";
+import AddAnimalForm from "./components/AddAnimalForm/AddAnimalForm";
 
 function App() {
   const count = useAppSelector((state) => state.counter.value);
@@ -10,7 +10,6 @@ function App() {
 
   return (
     <div className="App">
-      <AnimalCard />
       <div>
         <div>
           <button
@@ -28,6 +27,8 @@ function App() {
           </button>
         </div>
       </div>
+      <AddAnimalForm />
+      <AnimalCardList />
     </div>
   );
 }
