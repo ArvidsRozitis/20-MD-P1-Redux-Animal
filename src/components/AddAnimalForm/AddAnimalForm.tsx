@@ -1,33 +1,42 @@
+import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import styled from "styled-components";
 import Button from "../Button/Button";
-import SelectSpecies from "../SelectSpecies/SelectSpecies";
-import { setAnimalSpecie } from "../../slices/animalsSlice";
+import { setAllAninmals } from "../../slices/animalsSlice";
+import { SelectSpecies } from "../SelectSpecies/SelectSpecies";
 
-const AddAnimalForm = () => {
+export const AddAnimalForm = () => {
   const dispatch = useAppDispatch();
-  const animalSpecie = useAppSelector((store) => {
-    return store.animals.species;
+  const animals = useAppSelector((store) => {
+    return store.animals.animals;
   });
+
+  const [selectValue, setSelectValue] = useState("select species");
   const [formData, setFormData] = useState({
     name: "",
-    imageUrl: animalSpecie,
+    imageUrl: "",
   });
 
   const submitHandler = () => {
+    const newAnimal = { ...formData, species: selectValue, id: uuidv4() };
+    const updatedAnimals = [...animals, newAnimal];
+    localStorage.setItem("animals", JSON.stringify(updatedAnimals));
+
     console.log("submited");
-    dispatch(setAnimalSpecie(''))
     setFormData({
       name: "",
       imageUrl: "",
     });
+    setSelectValue("select species");
+    const storedAnimals = localStorage.getItem("animals");
+    dispatch(setAllAninmals(storedAnimals ? JSON.parse(storedAnimals) : []));
   };
   return (
     <div>
       name: {formData.name}
       <br />
-      species: {animalSpecie}
+      species: {selectValue}
       <br />
       imageUrl: {formData.imageUrl}
       <FormStyled
@@ -44,7 +53,12 @@ const AddAnimalForm = () => {
             }}
           />
         </LabelStyled>
-        <SelectSpecies />
+        <SelectSpecies
+          selectValue={selectValue}
+          onChange={(value: string) => {
+            setSelectValue(value);
+          }}
+        />
 
         <LabelStyled>
           image url
@@ -61,8 +75,6 @@ const AddAnimalForm = () => {
   );
 };
 
-export default AddAnimalForm;
-
 const FormStyled = styled.form`
   display: flex;
   flex-direction: column;
@@ -77,3 +89,6 @@ const LabelStyled = styled.label`
   flex-direction: column;
   align-items: flex-start;
 `;
+function uuid() {
+  throw new Error("Function not implemented.");
+}

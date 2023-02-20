@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type Animal = {
-  id: number;
+  id: string;
   name: string;
   species: string;
   imageUrl: string;
@@ -10,13 +10,13 @@ type Animal = {
 interface AnimalsSliceType {
   animals: Animal[];
   loading: boolean;
-  species: string
+  species: string;
 }
 
 const initialState: AnimalsSliceType = {
   animals: [],
   loading: true,
-  species: ""
+  species: "",
 };
 
 const animalsSlice = createSlice({
@@ -26,17 +26,13 @@ const animalsSlice = createSlice({
     setAllAninmals: (state, action: PayloadAction<Animal[]>) => {
       state.animals = action.payload;
     },
-    setLoading: (state, action: PayloadAction<boolean> ) => {
-      state.loading = action.payload
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
     },
-    setAnimalSpecie: (state, action: PayloadAction<string> ) => {
-      state.species = action.payload
-    }
   },
-  
 });
 
 export type { Animal };
-export const { setAllAninmals, setLoading, setAnimalSpecie } = animalsSlice.actions;
+export const { setAllAninmals, setLoading } = animalsSlice.actions;
 // export const selectAnimals = (state: RootState) => state.animals.animals
 export default animalsSlice.reducer;

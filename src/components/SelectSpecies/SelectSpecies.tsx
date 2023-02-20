@@ -1,31 +1,43 @@
 import styled from "styled-components";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { setAnimalSpecie } from "../../slices/animalsSlice";
-import { useState } from "react";
+import { useAppSelector } from "../../store/hooks";
 
-const SelectSpecies = () => {
-  const [inputIsVisable, setInputIsVisable] = useState(false);
-  const dispatch = useAppDispatch();
+type SelectProps = {
+  onChange: (value: string) => void;
+  selectValue: string;
+};
 
-  const addNewHandler = () => {
-    setInputIsVisable(true);
-  };
-
+export const SelectSpecies = ({ onChange, selectValue }: SelectProps) => {
   const animals = useAppSelector((store) => {
     return store.animals.animals;
   });
 
-  if (inputIsVisable === true) {
-    return <h1>inputs</h1>;
+  //render add nev input
+  if (
+    !animals.find((e) => e.species === selectValue) &&
+    selectValue !== "select species"
+  ) {
+    return (
+      <LabelStyled>
+        add species
+        <input
+          onChange={(e) => {
+            onChange(e.currentTarget.value);
+          }}
+        />
+      </LabelStyled>
+    );
   }
 
+  //render select
   return (
     <>
       <select
-        defaultValue={"first"}
-        onChange={(e) => dispatch(setAnimalSpecie(e.target.value))}
+        value={selectValue}
+        onChange={(e) => {
+          onChange(e.currentTarget.value);
+        }}
       >
-        <option value={"first"} disabled>
+        <option value={"select species"} disabled>
           select species
         </option>
         {animals.map((animal) => (
@@ -33,10 +45,15 @@ const SelectSpecies = () => {
             {animal.species}
           </option>
         ))}
-        <option value={'1'}>add new species</option>
+        <option value={"+"}>add new species</option>
       </select>
     </>
   );
 };
 
-export default SelectSpecies;
+//style
+const LabelStyled = styled.label`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;

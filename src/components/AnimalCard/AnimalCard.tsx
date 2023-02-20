@@ -1,18 +1,31 @@
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import styled from "styled-components";
 import ButtonDelete from "../Button/ButtonDelete";
+import { setAllAninmals } from "../../slices/animalsSlice";
 
 type AnimalsProps = {
-  id: number;
+  id: string;
   name: string;
   species: string;
   imageUrl: string;
 };
 
 export const AnimalCard = ({ id, name, species, imageUrl }: AnimalsProps) => {
+  const dispatch = useAppDispatch();
+  const animals = useAppSelector((store) => {
+    return store.animals.animals;
+  });
+
+  //delete animal
   const deleteHandler = () => {
-    console.log("delete");
+    const updatedAnimals = animals.filter((animal) => animal.id !== id);
+    localStorage.setItem("animals", JSON.stringify(updatedAnimals));
+    const storedAnimals = localStorage.getItem("animals");
+    dispatch(setAllAninmals(storedAnimals ? JSON.parse(storedAnimals) : []));
+    console.log("deleted", id);
   };
 
+  //render
   return (
     <DivConatainerStyled>
       <ImageStyled src={imageUrl} alt="image" />
@@ -27,6 +40,7 @@ export const AnimalCard = ({ id, name, species, imageUrl }: AnimalsProps) => {
   );
 };
 
+//style
 const DivConatainerStyled = styled.div`
   display: flex;
   flex-direction: row;
