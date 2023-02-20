@@ -38,24 +38,24 @@ const AnimalCardList = () => {
   return (
     <div>
       <LabelStyled>
-        filtrēt pēc sugas
-      <input
-        type="text"
-        onChange={(e) => {
-          setSelectedSpecies(e.currentTarget.value);
-        }}
-      />
+        filter by species
+        <input
+          type="text"
+          onChange={(e) => {
+            setSelectedSpecies(e.currentTarget.value);
+          }}
+        />
       </LabelStyled>
       <DivListContainer>
-      {filteredAnimals.map((animal) => (
-        <AnimalCard
-          key={Math.random()}
-          id={animal.id}
-          name={animal.name}
-          species={animal.species}
-          imageUrl={animal.imageUrl}
-        />
-      ))}
+        {filteredAnimals.map((animal) => (
+          <AnimalCard
+            key={Math.random()}
+            id={animal.id}
+            name={animal.name}
+            species={animal.species}
+            imageUrl={animal.imageUrl}
+          />
+        ))}
       </DivListContainer>
     </div>
   );
@@ -67,7 +67,7 @@ const DivListContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-`
+`;
 
 const LabelStyled = styled.label`
   display: flex;
