@@ -33,7 +33,7 @@ export const AddAnimalForm = () => {
     dispatch(setAllAninmals(storedAnimals ? JSON.parse(storedAnimals) : []));
   };
   return (
-    <div>
+    <DivStyledFromContainer>
       name: {formData.name}
       <br />
       species: {selectValue}
@@ -46,7 +46,7 @@ export const AddAnimalForm = () => {
       >
         <LabelStyled>
           Animal name
-          <input
+          <InputStyled
             value={formData.name}
             onChange={(e) => {
               setFormData({ ...formData, name: e.currentTarget.value });
@@ -62,7 +62,7 @@ export const AddAnimalForm = () => {
 
         <LabelStyled>
           image url
-          <input
+          <InputStyled
             value={formData.imageUrl}
             onChange={(e) => {
               setFormData({ ...formData, imageUrl: e.currentTarget.value });
@@ -71,12 +71,13 @@ export const AddAnimalForm = () => {
         </LabelStyled>
         <Button onClick={() => submitHandler()} text={"add new animal"} />
       </FormStyled>
-    </div>
+    </DivStyledFromContainer>
   );
 };
 
 const FormStyled = styled.form`
   display: flex;
+  width: 400px;
   flex-direction: column;
   background-color: #343333;
   color: whitesmoke;
@@ -89,6 +90,13 @@ const LabelStyled = styled.label`
   flex-direction: column;
   align-items: flex-start;
 `;
-function uuid() {
-  throw new Error("Function not implemented.");
-}
+const DivStyledFromContainer = styled.label`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 400px;
+`;
+const InputStyled = styled.input`
+  display: flex;
+  width: 100%;
+`;

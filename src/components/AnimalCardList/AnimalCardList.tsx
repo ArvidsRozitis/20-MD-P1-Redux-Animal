@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { AnimalCard } from "../AnimalCard/AnimalCard";
 import { useEffect, useState } from "react";
@@ -29,19 +30,23 @@ const AnimalCardList = () => {
     if (selectedSpecies === "") {
       return animal;
     } else {
-      return animal.species === selectedSpecies;
+      return animal.species.toLowerCase().includes(selectedSpecies);
     }
   });
 
   //render
   return (
     <div>
+      <LabelStyled>
+        filtrēt pēc sugas
       <input
         type="text"
         onChange={(e) => {
           setSelectedSpecies(e.currentTarget.value);
         }}
       />
+      </LabelStyled>
+      <DivListContainer>
       {filteredAnimals.map((animal) => (
         <AnimalCard
           key={Math.random()}
@@ -51,8 +56,22 @@ const AnimalCardList = () => {
           imageUrl={animal.imageUrl}
         />
       ))}
+      </DivListContainer>
     </div>
   );
 };
 
 export { AnimalCardList };
+
+const DivListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`
+
+const LabelStyled = styled.label`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+`;
