@@ -81,6 +81,8 @@ export const AddAnimalForm = () => {
         <LabelStyled>
           image url
           <InputStyled
+            type="url"
+            pattern="https?://.+"
             required
             value={formData.imageUrl}
             onChange={(e) => {

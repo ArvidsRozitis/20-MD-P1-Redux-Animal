@@ -31,7 +31,10 @@ export const AnimalCard = ({ id, name, species, imageUrl }: AnimalsProps) => {
       <ImageStyled src={imageUrl} alt="image" />
       <DivInfoWrapper>
         <h2>{name}</h2>
-        <h3>{species}</h3>
+        <DivSpeciesWrapper>
+          <p>spiecies</p>
+          <h3>{species}</h3>
+        </DivSpeciesWrapper>
         <DivBottomWrapper>
           <ButtonDelete onClick={() => deleteHandler()} text={"x"} />
         </DivBottomWrapper>
@@ -70,14 +73,20 @@ const DivInfoWrapper = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
-  gap: 10px;
   align-items: flex-start;
 `;
 
 const DivBottomWrapper = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;
   align-items: flex-end;
   justify-content: flex-end;
+`;
+
+const DivSpeciesWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  height: 100%;
 `;
