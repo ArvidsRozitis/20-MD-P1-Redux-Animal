@@ -5,6 +5,8 @@ import styled from "styled-components";
 import Button from "../Button/Button";
 import { setAllAninmals } from "../../slices/animalsSlice";
 import { SelectSpecies } from "../SelectSpecies/SelectSpecies";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const AddAnimalForm = () => {
   const dispatch = useAppDispatch();
@@ -12,25 +14,40 @@ export const AddAnimalForm = () => {
     return store.animals.animals;
   });
 
+  //toasts
+  const error = () => toast.error("Please fill all fields in form!");
+  const succes = () => toast.success("You added an animal!");
+
   const [selectValue, setSelectValue] = useState("select species");
   const [formData, setFormData] = useState({
     name: "",
     imageUrl: "",
   });
 
+  //submit handler
   const submitHandler = () => {
-    const newAnimal = { ...formData, species: selectValue, id: uuidv4() };
-    const updatedAnimals = [...animals, newAnimal];
-    localStorage.setItem("animals", JSON.stringify(updatedAnimals));
+    if (
+      selectValue === "" ||
+      selectValue === "select species" ||
+      formData.name === "" ||
+      formData.imageUrl === ""
+    ) {
+      error();
+    } else {
+      const newAnimal = { ...formData, species: selectValue, id: uuidv4() };
+      const updatedAnimals = [...animals, newAnimal];
+      localStorage.setItem("animals", JSON.stringify(updatedAnimals));
 
-    console.log("submited");
-    setFormData({
-      name: "",
-      imageUrl: "",
-    });
-    setSelectValue("select species");
-    const storedAnimals = localStorage.getItem("animals");
-    dispatch(setAllAninmals(storedAnimals ? JSON.parse(storedAnimals) : []));
+      console.log("submited");
+      setFormData({
+        name: "",
+        imageUrl: "",
+      });
+      setSelectValue("select species");
+      const storedAnimals = localStorage.getItem("animals");
+      dispatch(setAllAninmals(storedAnimals ? JSON.parse(storedAnimals) : []));
+      succes();
+    }
   };
   return (
     <DivStyledFromContainer>
@@ -47,6 +64,7 @@ export const AddAnimalForm = () => {
         <LabelStyled>
           Animal name
           <InputStyled
+            required
             value={formData.name}
             onChange={(e) => {
               setFormData({ ...formData, name: e.currentTarget.value });
@@ -63,6 +81,7 @@ export const AddAnimalForm = () => {
         <LabelStyled>
           image url
           <InputStyled
+            required
             value={formData.imageUrl}
             onChange={(e) => {
               setFormData({ ...formData, imageUrl: e.currentTarget.value });
@@ -71,6 +90,7 @@ export const AddAnimalForm = () => {
         </LabelStyled>
         <Button onClick={() => submitHandler()} text={"add new animal"} />
       </FormStyled>
+      <ToastContainer />
     </DivStyledFromContainer>
   );
 };
